@@ -1,15 +1,27 @@
 const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
-// Add web-specific resolver for react-native-pager-view
+// Platform-specific alias resolution
+config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
 config.resolver.platforms = ['ios', 'android', 'native', 'web'];
-config.resolver.alias = {
-  ...config.resolver.alias,
-  'react-native-pager-view': require.resolve('./components/PagerViewWeb.tsx'),
-};
 
-// Platform-specific extensions
-config.resolver.sourceExts = [...config.resolver.sourceExts, 'web.js', 'web.ts', 'web.tsx'];
+// Custom resolver to handle react-native-pager-view on web
+const originalResolver = config.resolver.resolveRequest;
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === 'react-native-pager-view' && platform === 'web') {
+    return {
+      filePath: path.resolve(__dirname, 'components/PagerViewWeb.tsx'),
+      type: 'sourceFile',
+    };
+  }
+  
+  if (originalResolver) {
+    return originalResolver(context, moduleName, platform);
+  }
+  
+  return context.resolveRequest(context, moduleName, platform);
+};
 
 module.exports = config;
