@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -10,6 +9,7 @@ export default function RootLayout() {
   return (
     <>
       <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
         <Stack.Screen name="splash" />
         <Stack.Screen name="intro" />
         <Stack.Screen name="language" />
