@@ -6,7 +6,7 @@ const config = getDefaultConfig(__dirname);
 config.resolver.platforms = ['ios', 'android', 'native', 'web'];
 config.resolver.alias = {
   ...config.resolver.alias,
-  'react-native-pager-view': require.resolve('./components/PagerViewWeb'),
+  'react-native-pager-view': require.resolve('./components/PagerViewWeb.tsx'),
 };
 
 // Platform-specific extensions
